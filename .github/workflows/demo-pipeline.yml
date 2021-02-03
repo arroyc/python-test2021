@@ -1,0 +1,28 @@
+name: Demo Python windows - cryptography - v3.0
+
+on: [push, repository_dispatch]
+
+jobs:
+  build:
+
+    runs-on: 'windows-latest'
+
+    strategy:
+      matrix:
+        version: [ 3.8 3.9 ]
+
+    steps:
+    - uses: actions/checkout@master
+      name: Checkout source
+      with:
+        repository: pyca/cryptography
+        ref: b0d9bdcfc9659fffcb1d539cb00130f8fda3d011
+
+    - name: Build package with Oryx
+      run: docker run --volume $(pwd):/repo python:windowsservercore-ltsc2016 python setup.py bdist --format=zip
+
+    - name: Archive dist folder
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.version }}
+        path: dist
