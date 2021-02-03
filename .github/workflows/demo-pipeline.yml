@@ -19,7 +19,7 @@ jobs:
         ref: b0d9bdcfc9659fffcb1d539cb00130f8fda3d011
 
     - name: Build package with Oryx
-      run: docker run --volume $(pwd):/repo hub.docker.com/_/python:windowsservercore-ltsc2016 python setup.py bdist --format=zip
+      run: cd  $(pwd) && python setup.py bdist --format=zip
 
     - name: Archive dist folder
       uses: actions/upload-artifact@v2
